@@ -8,6 +8,7 @@ lang: "en"
 categories: ["Power BI"]
 tags: ["Analytics","Azure","Azure Data","Azure Synapse","Data","REST API","Serverless","SQL Serverless","Synapse"]
 heroImage: "../../assets/blog/2023/12/7-1.png"
+hideHero: true
 translationOf: "capacity-metrics-app-analysis"
 originalUrl: "https://gennakerdata.com/2023/12/12/capacity-metrics-app-analysis-english-version/"
 ---

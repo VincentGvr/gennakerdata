@@ -8,6 +8,7 @@ lang: "en"
 categories: []
 tags: []
 heroImage: "../../assets/blog/2025/07/agent-schema.png"
+hideHero: true
 translationOf: "mcp-fabric-rti-fr"
 originalUrl: "https://gennakerdata.com/2025/07/28/mcp-fabric-rti-en/"
 ---

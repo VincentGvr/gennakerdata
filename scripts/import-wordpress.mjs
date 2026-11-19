@@ -370,6 +370,7 @@ for (const entry of entries) {
 			categories,
 			tags: tagSource.tags.map((t) => t.name),
 			...(hero ? { heroImage: hero } : {}),
+			...(hero && md.includes(`(${hero})`) ? { hideHero: true } : {}),
 			...(TRANSLATIONS[it.slug] ? { translationOf: TRANSLATIONS[it.slug] } : {}),
 			...(it.slug === DUPLICATE_POST ? { canonicalPermalink: byPath.get(normPath(`/${PAGE_ARTICLE}`)) } : {}),
 			...(missingImages ? { missingImages } : {}),

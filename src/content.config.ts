@@ -20,6 +20,8 @@ const blog = defineCollection({
 			categories: z.array(z.string()).default([]),
 			tags: z.array(z.string()).default([]),
 			heroImage: z.optional(image()),
+			// The hero image is already part of the article body: only use it for cards and previews
+			hideHero: z.boolean().default(false),
 			translationOf: z.string().optional(),
 			canonicalPermalink: z.string().optional(),
 			// Number of illustrations that could not be recovered during the migration

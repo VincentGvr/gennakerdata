@@ -10,6 +10,7 @@ homeOrder: 0
 categories: []
 tags: []
 heroImage: "../../assets/blog/2026/01/image-7.png"
+hideHero: true
 translationOf: "microsoft-fabric-data-agent-whats-impacting-prompt-costs"
 originalUrl: "https://gennakerdata.com/2026/01/26/fabric-data-agent-couts/"
 ---

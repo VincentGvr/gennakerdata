@@ -1,0 +1,62 @@
+---
+import About from '../components/About.astro';
+import PostCard from '../components/PostCard.astro';
+import { SECTIONS, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPosts, withBase } from '../utils';
+
+const posts = await getPosts();
+const bySection = SECTIONS.map((section) => ({
+	...section,
+	posts: posts
+		.filter((p) => p.data.section === section.name)
+		.sort((a, b) => (a.data.homeOrder ?? 999) - (b.data.homeOrder ?? 999)),
+}));
+---
+
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+	<section class="hero">
+		<div class="wrapper">
+			<h1>{SITE_TITLE}</h1>
+			<p class="lead">
+				Azure, Microsoft Fabric, Power BI, PowerShell et SQL : retours d’expérience, architectures
+				et scripts.
+			</p>
+			<p class="hero-actions">
+				<a class="button" href={withBase('/recherche/')}>Rechercher un article</a>
+				<a class="button secondary" href={withBase('/articles/')}>Tous les articles</a>
+			</p>
+			<ul class="chips section-nav" aria-label="Rubriques">
+				{
+					SECTIONS.map((s) => (
+						<li>
+							<a href={`#${s.slug}`}>{s.name}</a>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+
+	<div class="wrapper">
+		{
+			bySection.map((s, i) => (
+				<section class="home-section" id={s.slug} aria-labelledby={`${s.slug}-title`}>
+					<h2 id={`${s.slug}-title`}>{s.name}</h2>
+					<p class="section-desc">{s.description}</p>
+					<div class="grid">
+						{s.posts.map((post, j) => (
+							<PostCard post={post} eager={i === 0 && j < 3} />
+						))}
+					</div>
+				</section>
+			))
+		}
+
+		<p class="center">
+			<a class="button secondary" href={withBase('/articles/')}>Voir tous les articles</a>
+		</p>
+
+		<About />
+	</div>
+</BaseLayout>

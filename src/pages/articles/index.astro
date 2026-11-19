@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { categoryHref, formatDate, getPosts, postHref, readingTime } from '../../utils';
+
+const posts = await getPosts();
+const years = [...new Set(posts.map((p) => p.data.pubDate.getUTCFullYear()))].sort((a, b) => b - a);
+const categories = [...new Set(posts.flatMap((p) => p.data.categories))].sort((a, b) =>
+	a.localeCompare(b, 'fr'),
+);
+---
+
+<BaseLayout
+	title="Tous les articles"
+	description="Liste chronologique de tous les articles de Gennaker Data."
+>
+	<div class="wrapper page">
+		<h1>Tous les articles</h1>
+		<ul class="chips" aria-label="Catégories">
+			{
+				categories.map((c) => (
+					<li>
+						<a href={categoryHref(c)}>{c}</a>
+					</li>
+				))
+			}
+		</ul>
+		{
+			years.map((year) => (
+				<section aria-labelledby={`y${year}`}>
+					<h2 id={`y${year}`}>{year}</h2>
+					<ul class="archive-list">
+						{posts
+							.filter((p) => p.data.pubDate.getUTCFullYear() === year)
+							.map((p) => (
+								<li>
+									<time datetime={p.data.pubDate.toISOString()}>
+										{formatDate(p.data.pubDate, p.data.lang)}
+									</time>
+									<a href={postHref(p)} lang={p.data.lang}>
+										{p.data.title}
+									</a>
+									<span class="meta">· {readingTime(p.body)} min</span>
+									{p.data.lang === 'en' && <span class="badge">EN</span>}
+								</li>
+							))}
+					</ul>
+				</section>
+			))
+		}
+	</div>
+</BaseLayout>

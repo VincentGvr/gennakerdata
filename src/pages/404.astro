@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../utils';
+---
+
+<BaseLayout title="Page introuvable" description="Cette page n’existe pas." noindex>
+	<div class="wrapper page center">
+		<h1>Page introuvable</h1>
+		<p>La page demandée n’existe pas ou a été déplacée.</p>
+		<p>
+			<a class="button" href={withBase('/')}>Retour à l’accueil</a>
+			<a class="button secondary" href={withBase('/recherche/')}>Rechercher</a>
+		</p>
+	</div>
+</BaseLayout>

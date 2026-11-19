@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../utils';
+---
+
+<BaseLayout
+	title="Recherche"
+	description="Rechercher dans les articles de Gennaker Data."
+	noindex
+>
+	<div class="wrapper page">
+		<h1>Recherche</h1>
+		<div id="search" data-base={withBase('/')}>
+			<noscript>La recherche nécessite JavaScript.</noscript>
+		</div>
+		<p id="search-error" class="notice" hidden>
+			L’index de recherche est généré lors du build (<code>npm run build</code>). Il n’est pas
+			disponible avec <code>npm run dev</code> ; utilisez <code>npm run preview</code>.
+		</p>
+	</div>
+</BaseLayout>
+
+<script>
+	const el = document.getElementById('search');
+	const error = document.getElementById('search-error');
+	const base = el?.dataset.base ?? '/';
+	const load = (tag: 'script' | 'link', attrs: Record<string, string>) =>
+		new Promise<void>((resolve, reject) => {
+			const node = document.createElement(tag);
+			Object.assign(node, attrs);
+			node.onload = () => resolve();
+			node.onerror = () => reject(new Error(`Cannot load ${attrs.src ?? attrs.href}`));
+			document.head.appendChild(node);
+		});
+
+	(async () => {
+		try {
+			await Promise.all([
+				load('link', { rel: 'stylesheet', href: `${base}pagefind/pagefind-ui.css` }),
+				load('script', { src: `${base}pagefind/pagefind-ui.js` }),
+			]);
+			// @ts-expect-error PagefindUI is provided by pagefind-ui.js
+			new PagefindUI({
+				element: '#search',
+				baseUrl: base,
+				showImages: false,
+				resetStyles: false,
+				translations: {
+					placeholder: 'Rechercher un article…',
+				},
+			});
+			const params = new URLSearchParams(location.search).get('q');
+			if (params) {
+				const input = el?.querySelector<HTMLInputElement>('input');
+				if (input) {
+					input.value = params;
+					input.dispatchEvent(new Event('input', { bubbles: true }));
+				}
+			}
+		} catch {
+			if (error) error.hidden = false;
+		}
+	})();
+</script>

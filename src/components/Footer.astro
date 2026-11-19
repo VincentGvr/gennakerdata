@@ -1,0 +1,18 @@
+---
+import { AUTHOR, LINKEDIN_URL, SITE_TITLE } from '../consts';
+import { withBase } from '../utils';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+	<div class="wrapper footer-inner">
+		<p>© {year} {AUTHOR} · {SITE_TITLE}</p>
+		<ul>
+			<li><a href={LINKEDIN_URL} rel="me noopener" target="_blank">LinkedIn</a></li>
+			<li><a href={withBase('/rss.xml')}>RSS</a></li>
+			<li><a href={withBase('/sitemap-index.xml')}>Plan du site</a></li>
+		</ul>
+		<p class="small">Site statique, sans suivi ni cookie publicitaire.</p>
+	</div>
+</footer>

@@ -1,0 +1,36 @@
+---
+import type { ImageMetadata } from 'astro';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+
+interface Props {
+	title: string;
+	description: string;
+	image?: ImageMetadata;
+	type?: 'website' | 'article';
+	lang?: 'fr' | 'en';
+	canonical?: string;
+	pubDate?: Date;
+	updatedDate?: Date;
+	tags?: string[];
+	noindex?: boolean;
+}
+const { lang = 'fr', ...head } = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang} data-theme="light">
+	<head>
+		<BaseHead lang={lang} {...head} />
+		<slot name="head" />
+	</head>
+	<body>
+		<a class="skip-link" href="#main">Aller au contenu</a>
+		<Header />
+		<main id="main" tabindex="-1">
+			<slot />
+		</main>
+		<Footer />
+	</body>
+</html>

@@ -1,0 +1,34 @@
+---
+import PostCard from '../../components/PostCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPosts, slugify, withBase } from '../../utils';
+
+export async function getStaticPaths() {
+	const posts = await getPosts();
+	const names = new Map<string, string>();
+	for (const p of posts) for (const c of p.data.categories) names.set(slugify(c), c);
+	return [...names].map(([slug, name]) => ({
+		params: { slug },
+		props: { name, posts: posts.filter((p) => p.data.categories.includes(name)) },
+	}));
+}
+
+const { name, posts } = Astro.props;
+---
+
+<BaseLayout
+	title={`Catégorie : ${name}`}
+	description={`Articles de la catégorie ${name} sur Gennaker Data.`}
+>
+	<div class="wrapper page">
+		<h1>Catégorie : {name}</h1>
+		<p class="section-desc">
+			{posts.length} article{posts.length > 1 ? 's' : ''} · <a href={withBase('/articles/')}
+				>Tous les articles</a
+			>
+		</p>
+		<div class="grid">
+			{posts.map((post) => <PostCard post={post} />)}
+		</div>
+	</div>
+</BaseLayout>

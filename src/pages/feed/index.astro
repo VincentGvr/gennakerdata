@@ -1,0 +1,19 @@
+---
+// Legacy WordPress feed URL (/feed/): static pages cannot send HTTP redirects, so point readers to the RSS file.
+import { withBase } from '../../utils';
+const target = withBase('/rss.xml');
+---
+
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Flux RSS</title>
+		<meta http-equiv="refresh" content={`0;url=${target}`} />
+		<meta name="robots" content="noindex" />
+		<link rel="canonical" href={new URL(target, Astro.site)} />
+	</head>
+	<body>
+		<p><a href={target}>Flux RSS</a></p>
+	</body>
+</html>

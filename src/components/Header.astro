@@ -1,0 +1,65 @@
+---
+import { SITE_TITLE } from '../consts';
+import { withBase } from '../utils';
+
+const { pathname } = Astro.url;
+const current = (href: string) => {
+	const target = withBase(href);
+	return target === withBase('/') ? pathname === target : pathname.startsWith(target);
+};
+const links = [
+	{ href: '/', label: 'Accueil' },
+	{ href: '/articles/', label: 'Articles' },
+	{ href: '/a-propos/', label: 'À propos' },
+	{ href: '/recherche/', label: 'Recherche' },
+];
+---
+
+<header class="site-header">
+	<div class="wrapper header-inner">
+		<a class="brand" href={withBase('/')}>{SITE_TITLE}</a>
+		<nav aria-label="Navigation principale">
+			<ul>
+				{
+					links.map((l) => (
+						<li>
+							<a href={withBase(l.href)} aria-current={current(l.href) ? 'page' : undefined}>
+								{l.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+		<button
+			type="button"
+			id="theme-toggle"
+			class="icon-button"
+			aria-label="Basculer entre thème clair et sombre"
+			title="Thème clair / sombre"
+		>
+			<svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+				<path
+					fill="currentColor"
+					d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path>
+			</svg>
+			<svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+				<circle cx="12" cy="12" r="4.5" fill="currentColor"></circle>
+				<g stroke="currentColor" stroke-width="2" stroke-linecap="round">
+					<path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"
+					></path>
+				</g>
+			</svg>
+		</button>
+	</div>
+</header>
+
+<script>
+	document.getElementById('theme-toggle')?.addEventListener('click', () => {
+		const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+		document.documentElement.dataset.theme = next;
+		try {
+			localStorage.setItem('theme', next);
+		} catch {}
+	});
+</script>

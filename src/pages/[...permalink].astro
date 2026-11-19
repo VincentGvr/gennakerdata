@@ -1,0 +1,25 @@
+---
+import { getCollection, render } from 'astro:content';
+import PostLayout from '../layouts/PostLayout.astro';
+import { getPosts } from '../utils';
+
+export async function getStaticPaths() {
+	const posts = await getPosts();
+	return posts.map((post) => ({
+		params: { permalink: post.data.permalink.replace(/^\/|\/$/g, '') },
+		props: {
+			post,
+			translation: posts.find(
+				(p) => p.data.slug === post.data.translationOf || p.data.translationOf === post.data.slug,
+			),
+		},
+	}));
+}
+
+const { post, translation } = Astro.props;
+const { Content, headings } = await render(post);
+---
+
+<PostLayout post={post} headings={headings} translation={translation}>
+	<Content />
+</PostLayout>

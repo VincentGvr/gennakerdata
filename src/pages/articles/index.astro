@@ -36,11 +36,13 @@ const categories = [...new Set(posts.flatMap((p) => p.data.categories))].sort((a
 									<time datetime={p.data.pubDate.toISOString()}>
 										{formatDate(p.data.pubDate, p.data.lang)}
 									</time>
-									<a href={postHref(p)} lang={p.data.lang}>
-										{p.data.title}
-									</a>
-									<span class="meta">· {readingTime(p.body)} min</span>
-									{p.data.lang === 'en' && <span class="badge">EN</span>}
+									<span class="archive-title">
+										<a href={postHref(p)} lang={p.data.lang}>
+											{p.data.title}
+										</a>
+										<span class="meta">· {readingTime(p.body)} min</span>
+										{p.data.lang === 'en' && <span class="badge">EN</span>}
+									</span>
 								</li>
 							))}
 					</ul>

@@ -413,16 +413,28 @@ h3 {
 	padding: 0;
 }
 .archive-list li {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.25rem 0.75rem;
-	padding: 0.35rem 0;
+	display: grid;
+	grid-template-columns: 11rem minmax(0, 1fr);
+	gap: 0.25rem 1rem;
+	align-items: baseline;
+	padding: 0.5rem 0;
 	border-bottom: 1px solid var(--border);
 }
 .archive-list time {
 	color: var(--text-muted);
-	min-width: 10.5rem;
 	font-size: 0.95rem;
+}
+.archive-title .meta {
+	margin-left: 0.4rem;
+	white-space: nowrap;
+}
+.archive-title .badge {
+	margin-left: 0.4rem;
+}
+@media (max-width: 640px) {
+	.archive-list li {
+		grid-template-columns: 1fr;
+	}
 }
 
 /* Post */

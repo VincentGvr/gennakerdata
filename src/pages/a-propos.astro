@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.png';
 import About from '../components/About.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
@@ -9,5 +11,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 >
 	<div class="wrapper page">
 		<About headingLevel="h1" />
+		<figure class="about-logo">
+			<Image
+				class="logo-art"
+				src={logo}
+				alt="Logo Gennaker Data : schéma éclaté d’un disque dur"
+				width={420}
+				loading="lazy"
+			/>
+		</figure>
 	</div>
 </BaseLayout>

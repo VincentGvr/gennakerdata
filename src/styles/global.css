@@ -150,11 +150,26 @@ h3 {
 	flex-wrap: wrap;
 }
 .brand {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6rem;
 	font-weight: 700;
 	font-size: 1.25rem;
 	color: var(--text);
 	text-decoration: none;
 	margin-right: auto;
+}
+.brand-logo {
+	width: 36px;
+	height: 36px;
+}
+.logo-art {
+	/* Black line drawing on transparent: invert it on dark backgrounds */
+	filter: none;
+}
+:root[data-theme='dark'] .brand-logo,
+:root[data-theme='dark'] .logo-art {
+	filter: invert(1);
 }
 .site-header nav ul {
 	display: flex;
@@ -301,6 +316,32 @@ h3 {
 .hero {
 	background: linear-gradient(180deg, var(--bg-soft), var(--bg));
 	padding-block: 3rem 1.5rem;
+}
+.hero-inner {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 2rem;
+	align-items: center;
+}
+.hero-logo {
+	width: min(300px, 32vw);
+	height: auto;
+}
+.about-logo {
+	margin: 3rem 0 1rem;
+	text-align: center;
+}
+.about-logo img {
+	max-width: min(420px, 100%);
+	height: auto;
+}
+@media (max-width: 760px) {
+	.hero-inner {
+		grid-template-columns: 1fr;
+	}
+	.hero-logo {
+		display: none;
+	}
 }
 .hero .lead {
 	font-size: 1.3rem;

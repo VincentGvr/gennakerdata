@@ -40,6 +40,7 @@ Dans GitHub Actions, il suffit de définir la variable de dépôt `USE_CUSTOM_DO
 - Articles : `src/content/blog/*.md` (front-matter : title, pubDate, slug, permalink, section, categories, tags, heroImage…).
 - Images : `src/assets/blog/`.
 - Import WordPress (déjà exécuté) : `node scripts/import-wordpress.mjs "<export>.xml"`. Les images sont téléchargées depuis le site et mises en cache (`scripts/image-manifest.json`).
+- Logo, favicons (`public/`), manifeste et image Open Graph par défaut : `node scripts/make-logo.mjs` (source : `scripts/assets/logo-source.png`).
 - Redirections `/<slug>/` → permalien canonique, `/gennaker-data/` → `/`, `/feed/` → `/rss.xml` : pages HTML meta-refresh (GitHub Pages ne gère pas les 301).
 
 ## Notes de migration

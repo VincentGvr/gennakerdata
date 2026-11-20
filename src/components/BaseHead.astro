@@ -43,8 +43,10 @@ const fullTitle = title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`;
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="color-scheme" content="light dark" />
-<link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
-<link rel="icon" href={withBase('/favicon.ico')} sizes="32x32" />
+<link rel="icon" href={withBase('/favicon.ico')} sizes="48x48" />
+<link rel="icon" type="image/png" sizes="32x32" href={withBase('/favicon-32.png')} />
+<link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
+<link rel="manifest" href={withBase('/site.webmanifest')} />
 <link rel="sitemap" href={withBase('/sitemap-index.xml')} />
 <link
 	rel="alternate"

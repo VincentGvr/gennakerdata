@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.png';
 import About from '../components/About.astro';
 import PostCard from '../components/PostCard.astro';
 import { SECTIONS, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
@@ -16,25 +18,34 @@ const bySection = SECTIONS.map((section) => ({
 
 <BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
 	<section class="hero">
-		<div class="wrapper">
-			<h1>{SITE_TITLE}</h1>
-			<p class="lead">
-				Azure, Microsoft Fabric, Power BI, PowerShell et SQL : retours d’expérience, architectures
-				et scripts.
-			</p>
-			<p class="hero-actions">
-				<a class="button" href={withBase('/recherche/')}>Rechercher un article</a>
-				<a class="button secondary" href={withBase('/articles/')}>Tous les articles</a>
-			</p>
-			<ul class="chips section-nav" aria-label="Rubriques">
-				{
-					SECTIONS.map((s) => (
-						<li>
-							<a href={`#${s.slug}`}>{s.name}</a>
-						</li>
-					))
-				}
-			</ul>
+		<div class="wrapper hero-inner">
+			<div>
+				<h1>{SITE_TITLE}</h1>
+				<p class="lead">
+					Azure, Microsoft Fabric, Power BI, PowerShell et SQL : retours d’expérience, architectures
+					et scripts.
+				</p>
+				<p class="hero-actions">
+					<a class="button" href={withBase('/recherche/')}>Rechercher un article</a>
+					<a class="button secondary" href={withBase('/articles/')}>Tous les articles</a>
+				</p>
+				<ul class="chips section-nav" aria-label="Rubriques">
+					{
+						SECTIONS.map((s) => (
+							<li>
+								<a href={`#${s.slug}`}>{s.name}</a>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+			<Image
+				class="hero-logo logo-art"
+				src={logo}
+				alt="Logo Gennaker Data : schéma éclaté d’un disque dur"
+				width={300}
+				loading="eager"
+			/>
 		</div>
 	</section>
 

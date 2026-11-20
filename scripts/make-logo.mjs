@@ -38,7 +38,7 @@ mkdirSync(root('src/assets'), { recursive: true });
 await sharp(trimmed).resize({ width: 900 }).png({ compressionLevel: 9, palette: true, quality: 90 }).toFile(root('src/assets/logo.png'));
 
 // ---- compact mark: the stack of platters, strokes thickened
-const crop = { left: 520, top: 425, width: 415, height: 390 };
+const crop = { left: 520, top: 405, width: 415, height: 410 };
 const cropped = await sharp(SRC).extract(crop).toBuffer();
 const side = Math.max(crop.width, crop.height) + 40;
 const squared = await sharp(cropped).extend({ top: Math.floor((side - crop.height) / 2), bottom: Math.ceil((side - crop.height) / 2), left: Math.floor((side - crop.width) / 2), right: Math.ceil((side - crop.width) / 2), background: '#fff' }).toBuffer();
@@ -52,17 +52,14 @@ const markWith = async (color, size) => {
 // header mark (black, transparent; inverted by CSS in dark mode)
 await sharp(await markWith({ r: 0, g: 0, b: 0 }, 256)).png({ palette: true }).toFile(root('src/assets/logo-mark.png'));
 
-// ---- favicons: white mark on a blue rounded tile
-async function tile(size) {
-	const radius = Math.round(size * 0.22);
-	const bg = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><rect width="${size}" height="${size}" rx="${radius}" fill="rgb(${ACCENT.r},${ACCENT.g},${ACCENT.b})"/></svg>`);
-	const inner = Math.round(size * 0.84);
-	const mark = await markWith({ r: 255, g: 255, b: 255 }, inner);
-	return sharp(bg).composite([{ input: mark, gravity: 'centre' }]).png().toBuffer();
-}
-const sizes = { 16: 16, 32: 32, 48: 48, 180: 180, 192: 192, 512: 512 };
+// ---- favicons: black mark on transparent background (apple-touch-icon: black on white, iOS fills transparency with black)
+async function icon(size, flat) {
+	const mark = await markWith({ r: 0, g: 0, b: 0 }, Math.round(size * (flat ? 0.8 : 0.96)));
+	if (!flat) return sharp({ create: { width: size, height: size, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } }).composite([{ input: mark, gravity: 'centre' }]).png().toBuffer();
+	return sharp({ create: { width: size, height: size, channels: 3, background: '#fff' } }).composite([{ input: mark, gravity: 'centre' }]).png().toBuffer();
+}const sizes = { 16: 16, 32: 32, 48: 48, 180: 180, 192: 192, 512: 512 };
 const png = {};
-for (const s of Object.values(sizes)) png[s] = await tile(s);
+for (const s of Object.values(sizes)) png[s] = await icon(s, s === 180);
 
 writeFileSync(root('public/favicon-32.png'), png[32]);
 writeFileSync(root('public/apple-touch-icon.png'), png[180]);
@@ -91,7 +88,7 @@ writeFileSync(root('public/favicon.ico'), Buffer.concat([header, ...entries, ...
 
 writeFileSync(
 	root('public/site.webmanifest'),
-	`${JSON.stringify({ name: 'Gennaker Data', short_name: 'Gennaker', icons: [{ src: 'icon-192.png', sizes: '192x192', type: 'image/png' }, { src: 'icon-512.png', sizes: '512x512', type: 'image/png' }], theme_color: '#1a4fd6', background_color: '#ffffff', display: 'browser' }, null, '\t')}\n`,
+	`${JSON.stringify({ name: 'Gennaker Data', short_name: 'Gennaker', icons: [{ src: 'icon-192.png', sizes: '192x192', type: 'image/png' }, { src: 'icon-512.png', sizes: '512x512', type: 'image/png' }], theme_color: '#ffffff', background_color: '#ffffff', display: 'browser' }, null, '\t')}\n`,
 );
 
 // ---- default OG image: logo on white card with title
